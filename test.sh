@@ -1,10 +1,5 @@
-#!/bin/bash
-
-docker compose down
-docker compose up -d
 
 echo "Waiting for LLM server to be ready..."
-SECONDS=0
 until curl -s -o /dev/null -w "%{http_code}" http://localhost:11434/v1/chat/completions \
     -H "Content-Type: application/json" \
     -d '{
@@ -14,18 +9,8 @@ until curl -s -o /dev/null -w "%{http_code}" http://localhost:11434/v1/chat/comp
         {"role": "user", "content": "Hello! What can you do?"}
     ]
     }' | grep -q "200"; do
-    echo "Waiting for LLM server... Elapsed time: ${SECONDS}s"
+    echo "Waiting for LLM server..."
     sleep 1
 done
 
 echo "LLM server is ready!"
-
-echo "Waiting for WebUI to be ready..."
-until curl -s http://localhost:3000/api/health > /dev/null; do
-    echo "Waiting for WebUI... Elapsed time: ${SECONDS}"
-    sleep 1
-done
-
-echo "WebUI is ready!"
-
-xdg-open http://localhost:3000 > /dev/null 2>&1 &

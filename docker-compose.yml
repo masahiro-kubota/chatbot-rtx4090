@@ -1,11 +1,10 @@
 services:
-  ollama:
-    image: ollama/ollama
-    container_name: ollama
-    volumes:
-      - ollama:/root/.ollama
+  qwen2:
+    image: qwenllm/qwenvl:2-cu121
+    container_name: qwen2
     ports:
       - "11434:11434"
+    ipc: "host"
     deploy:
       resources:
         reservations:
@@ -13,6 +12,12 @@ services:
             - driver: nvidia
               count: all
               capabilities: [gpu]
+    command: >
+      bash -c "python -m vllm.entrypoints.openai.api_server
+      --served-model-name Qwen2-VL-2B-Instruct
+      --model Qwen/Qwen2-VL-2B-Instruct
+      --max_model_len 6752
+      --port 11434"
 
   webui:
     image: ghcr.io/open-webui/open-webui:main
@@ -25,9 +30,8 @@ services:
       - "host.docker.internal:host-gateway"
     environment:
       - WEBUI_AUTH=False
-    depends_on:
-      - ollama
+      - OPENAI_API_BASE_URL=http://host.docker.internal:11434/v1
+      - ENABLE_OPENAI_API=true
 
 volumes:
-  ollama:
   open-webui:
