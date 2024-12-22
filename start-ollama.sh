@@ -2,8 +2,27 @@
 
 docker compose up -d
 
-echo "waiting for Ollama server to start..."
+echo "Waiting for Ollama server to be ready..."
+until curl -s http://localhost:11434/api/tags > /dev/null; do
+    echo "Waiting for Ollama API..."
+    sleep 1
+done
 
-sleep 30
+echo "Ollama server is ready!"
 
-docker exec -it ollama ollama run 7shi/tanuki-dpo-v1.0:8b-q6_K
+if docker exec ollama ollama list | grep -q "7shi/tanuki-dpo-v1.0:8b-q6_K"; then
+    echo "Model already exists, starting it..."
+else
+    echo "Downloading model..."
+    docker exec -it ollama ollama pull 7shi/tanuki-dpo-v1.0:8b-q6_K
+fi
+
+echo "Waiting for WebUI to be ready..."
+until curl -s http://localhost:3000/api/health > /dev/null; do
+    echo "Waiting for WebUI..."
+    sleep 1
+done
+
+echo "WebUI is ready!"
+
+xdg-open http://localhost:3000
