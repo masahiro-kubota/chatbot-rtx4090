@@ -8,7 +8,7 @@ SECONDS=0
 until curl -s -o /dev/null -w "%{http_code}" http://localhost:11434/v1/chat/completions \
     -H "Content-Type: application/json" \
     -d '{
-    "model": "Qwen2-VL-2B-Instruct",
+    "model": "Qwen2-VL-7B-Instruct",
     "messages": [
         {"role": "system", "content": "You are a helpful assistant."},
         {"role": "user", "content": "Hello! What can you do?"}
