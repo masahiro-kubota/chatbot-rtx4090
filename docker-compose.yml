@@ -16,7 +16,9 @@ services:
       bash -c "python -m vllm.entrypoints.openai.api_server
       --served-model-name Qwen2-VL-2B-Instruct
       --model Qwen/Qwen2-VL-2B-Instruct
-      --max_model_len 6752
+      --max_model_len 20000
+      --cpu-offload-gb 0
+      --gpu-memory-utilization 0.9
       --port 11434"
 
   webui:
