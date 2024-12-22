@@ -14,9 +14,9 @@ services:
               capabilities: [gpu]
     command: >
       bash -c "python -m vllm.entrypoints.openai.api_server
-      --served-model-name Qwen2-VL-2B-Instruct
-      --model Qwen/Qwen2-VL-2B-Instruct
-      --max_model_len 20000
+      --served-model-name Qwen2-VL-7B-Instruct
+      --model Qwen/Qwen2-VL-7B-Instruct
+      --max_model_len 10000
       --cpu-offload-gb 0
       --gpu-memory-utilization 0.9
       --port 11434"
