@@ -1,5 +1,7 @@
 #!/bin/bash
 
+docker compose down
+
 docker compose up -d
 
 echo "Waiting for Ollama server to be ready..."
@@ -25,4 +27,4 @@ done
 
 echo "WebUI is ready!"
 
-xdg-open http://localhost:3000
+xdg-open http://localhost:3000 > /dev/null 2>&1 &
