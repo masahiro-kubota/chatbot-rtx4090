@@ -1,6 +1,6 @@
 #!/bin/bash
 
-docker compose down
+docker compose stop
 docker compose up -d
 
 echo "Waiting for LLM server to be ready..."
